@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+
+    <style>
+        .strikeout {
+            text-decoration: line-through;
+        }
+
+        .normal {
+            text-decoration: none;
+        }
+
+        ul {
+            display: flex;
+            flex-direction: column;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="center">
+        <h1>Todo List</h1>
+        <button>Add Item</button>
+        <input type="text">
+        <ul></ul>
+    </div>    
+    <script>
+        const list = document.querySelector("ul");
+        const input = document.querySelector("input");
+        const button = document.querySelector("button");
+
+        button.addEventListener("click", () => {
+            if (input.value){
+                const newDiv = document.createElement("div")
+                const checkBox = document.createElement("input")
+                const label = document.createElement("label");
+
+                newDiv.draggable = 'true';
+                checkBox.type = 'checkbox';
+                label.textContent = input.value;
+                label.className = 'normal';
+                input.value = '';
+
+                newDiv.append(checkBox);
+                newDiv.append(label);
+                list.append(newDiv);
+
+                checkBox.addEventListener("click", () => {
+                    if (checkBox.checked){
+                        label.className = 'strikeout';
+                    } else {
+                        label.className = 'normal';
+                    }
+                })
+            } else {}
+        });
+    </script>
+</body>
+</html>
