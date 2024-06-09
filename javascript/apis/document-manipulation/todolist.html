@@ -3,11 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/877a08a96e.js" crossorigin="anonymous"></script>
     <title>Todo List</title>
 
     <style>
         .strikeout {
             text-decoration: line-through;
+        }
+
+        .hide {
+            opacity: 0.2;
         }
 
         .normal {
@@ -19,15 +24,20 @@
             flex-direction: column;
         }
 
+        .fa-solid, .fa-regular{
+            border: none;
+            background-color: white;
+        }
+
     </style>
 </head>
 <body>
     <div class="center">
-        <h1>Todo List</h1>
+        <h1 contenteditable="true">Todo List</h1>
         <button>Add Item</button>
         <input type="text">
         <ul></ul>
-    </div>    
+    </div>   
     <script>
         const list = document.querySelector("ul");
         const input = document.querySelector("input");
@@ -35,26 +45,44 @@
 
         button.addEventListener("click", () => {
             if (input.value){
-                const newDiv = document.createElement("div")
+                const item = document.createElement("div")
                 const checkBox = document.createElement("input")
                 const label = document.createElement("label");
+                const trash = document.createElement("button");
+                const hide = document.createElement("button");
 
-                newDiv.draggable = 'true';
+                item.draggable = 'true';
                 checkBox.type = 'checkbox';
                 label.textContent = input.value;
+                label.contentEditable = true;
                 label.className = 'normal';
+                trash.classList = "fa-solid fa-trash";
+                hide.classList = "fa-solid fa-eye";
                 input.value = '';
 
-                newDiv.append(checkBox);
-                newDiv.append(label);
-                list.append(newDiv);
+                item.append(checkBox);
+                item.append(label);
+                item.append(trash);
+                item.append(hide);
+                list.append(item);
 
                 checkBox.addEventListener("click", () => {
-                    if (checkBox.checked){
-                        label.className = 'strikeout';
+                    checkBox.checked ? label.className = 'strikeout':label.className = 'normal';
+                })
+
+                trash.addEventListener("click", () => {
+                    list.removeChild(item);
+                })
+
+                hide.addEventListener("click", () => {
+                    if (hide.classList.contains('fa-solid')){
+                        hide.className = 'fa-regular fa-eye';
+                        item.classList.add('hide');
                     } else {
-                        label.className = 'normal';
+                        hide.className = 'fa-solid fa-eye';
+                        item.classList.remove('hide');
                     }
+                    
                 })
             } else {}
         });
