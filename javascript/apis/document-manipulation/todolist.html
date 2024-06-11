@@ -15,10 +15,6 @@
             opacity: 0.2;
         }
 
-        .normal {
-            text-decoration: none;
-        }
-
         ul {
             display: flex;
             flex-direction: column;
@@ -33,7 +29,7 @@
 </head>
 <body>
     <div class="center">
-        <h1 contenteditable="true">Todo List</h1>
+        <h1 spellcheck="false" contenteditable="true">Todo List</h1>
         <button>Add Item</button>
         <input type="text">
         <ul></ul>
@@ -42,32 +38,34 @@
         const list = document.querySelector("ul");
         const input = document.querySelector("input");
         const button = document.querySelector("button");
-
+        
         button.addEventListener("click", () => {
             if (input.value){
                 const item = document.createElement("div")
                 const checkBox = document.createElement("input")
                 const label = document.createElement("label");
-                const trash = document.createElement("button");
+                const edit = document.createElement("button");
                 const hide = document.createElement("button");
+                const trash = document.createElement("button");
 
-                item.draggable = 'true';
+                item.draggable = true;
                 checkBox.type = 'checkbox';
                 label.textContent = input.value;
-                label.contentEditable = true;
-                label.className = 'normal';
-                trash.classList = "fa-solid fa-trash";
+                label.spellcheck = false;
+                edit.classList = "fa-solid fa-pen-to-square";
                 hide.classList = "fa-solid fa-eye";
+                trash.classList = "fa-solid fa-trash";
                 input.value = '';
 
                 item.append(checkBox);
                 item.append(label);
-                item.append(trash);
+                item.append(edit);
                 item.append(hide);
+                item.append(trash);
                 list.append(item);
 
                 checkBox.addEventListener("click", () => {
-                    checkBox.checked ? label.className = 'strikeout':label.className = 'normal';
+                    label.classList.toggle('strikeout');
                 })
 
                 trash.addEventListener("click", () => {
@@ -75,17 +73,29 @@
                 })
 
                 hide.addEventListener("click", () => {
+                    item.classList.toggle('hide');
                     if (hide.classList.contains('fa-solid')){
                         hide.className = 'fa-regular fa-eye';
-                        item.classList.add('hide');
                     } else {
                         hide.className = 'fa-solid fa-eye';
-                        item.classList.remove('hide');
+                    }
+                })
+                
+                edit.addEventListener("click", () => {
+                    if (edit.classList.contains('fa-solid')){
+                        edit.className = 'fa-regular fa-pen-to-square';
+                        label.contentEditable = true;
+                    } else {
+                        edit.className = 'fa-solid fa-pen-to-square';
+                        label.contentEditable = false;
                     }
                     
                 })
             } else {}
         });
+
+        input.focus();
     </script>
+   
 </body>
 </html>
