@@ -1,24 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang='en'>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Progress Bar</title>
 </head>
 <body>
-    <div id="app"></div>
-    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script type="text/jsx">
-        const app = document.getElementById("app");
-        
-        function Header() {
-            return (<h1>Develop. Preview. Ship.</h1>)
+    <style>
+        #progress {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-        
-        const root = ReactDOM.createRoot(app);
-        root.render(<Header/>);
+    </style>
+
+    <div id="progress">
+        <h3>50</h3>
+        <progress value='50' max='100'></progress>
+        <button>Click Me!</button>
+    </div>
+    <script>
+        const value = document.querySelector('h3')
+        const progress = document.querySelector('progress')
+        const increment = document.querySelector('button')
+
+        increment.addEventListener('click', () => {
+            progress.value = Math.floor(Math.random(5) * 100)
+            value.textContent = progress.value;
+        }); 
+
     </script>
 </body>
 </html>

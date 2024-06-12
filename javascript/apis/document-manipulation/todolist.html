@@ -30,26 +30,31 @@
 <body>
     <div class="center">
         <h1 spellcheck="false" contenteditable="true">Todo List</h1>
-        <button>Add Item</button>
-        <input type="text">
+        <div>
+            <button>Add Item</button>
+            <input type="text">
+        </div>
+        <progress value="0" max="100"></progress>
         <ul></ul>
     </div>   
     <script>
         const list = document.querySelector("ul");
         const input = document.querySelector("input");
         const button = document.querySelector("button");
+        const progress = document.querySelector("progress")
         
         button.addEventListener("click", () => {
+            console.log(progress.value)
             if (input.value){
                 const item = document.createElement("div")
-                const checkBox = document.createElement("input")
+                const checkbox = document.createElement("input")
                 const label = document.createElement("label");
                 const edit = document.createElement("button");
                 const hide = document.createElement("button");
                 const trash = document.createElement("button");
 
                 item.draggable = true;
-                checkBox.type = 'checkbox';
+                checkbox.type = 'checkbox';
                 label.textContent = input.value;
                 label.spellcheck = false;
                 edit.classList = "fa-solid fa-pen-to-square";
@@ -57,15 +62,17 @@
                 trash.classList = "fa-solid fa-trash";
                 input.value = '';
 
-                item.append(checkBox);
+                item.append(checkbox);
                 item.append(label);
                 item.append(edit);
                 item.append(hide);
                 item.append(trash);
                 list.append(item);
 
-                checkBox.addEventListener("click", () => {
+                checkbox.addEventListener("click", () => {
                     label.classList.toggle('strikeout');
+                    (checkbox.checked) ? progress.value += 100/list.childElementCount : progress.value -= 100/list.childElementCount;
+        
                 })
 
                 trash.addEventListener("click", () => {
