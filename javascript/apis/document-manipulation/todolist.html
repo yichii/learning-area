@@ -1,12 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang='en'>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://kit.fontawesome.com/877a08a96e.js" crossorigin="anonymous"></script>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <script src='https://kit.fontawesome.com/877a08a96e.js' crossorigin='anonymous'></script>
     <title>Todo List</title>
 
     <style>
+        #wrap {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .progressComp {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
         .strikeout {
             text-decoration: line-through;
         }
@@ -28,38 +41,42 @@
     </style>
 </head>
 <body>
-    <div class="center">
-        <h1 spellcheck="false" contenteditable="true">Todo List</h1>
+    <div id='wrap'>
+        <h1 spellcheck='false' contenteditable='true'>Todo List</h1>
         <div>
             <button>Add Item</button>
-            <input type="text">
+            <input type='text'>
         </div>
-        <progress value="0" max="100"></progress>
-        <ul></ul>
+        <div class='progressComp'>
+            <p>0%</p>
+            <progress value='0' max='100'></progress>
+        </div>
+        <ul id='list'></ul>
     </div>   
+
     <script>
-        const list = document.querySelector("ul");
-        const input = document.querySelector("input");
-        const button = document.querySelector("button");
-        const progress = document.querySelector("progress")
+        const list = document.querySelector('ul');
+        const input = document.querySelector('input');
+        const button = document.querySelector('button');
+        const progress = document.querySelector('progress')
+        const progressText = document.querySelector('p')
         
-        button.addEventListener("click", () => {
-            console.log(progress.value)
+        button.addEventListener('click', () => {
             if (input.value){
-                const item = document.createElement("div")
-                const checkbox = document.createElement("input")
-                const label = document.createElement("label");
-                const edit = document.createElement("button");
-                const hide = document.createElement("button");
-                const trash = document.createElement("button");
+                const item = document.createElement('div')
+                const checkbox = document.createElement('input')
+                const label = document.createElement('label');
+                const edit = document.createElement('button');
+                const hide = document.createElement('button');
+                const trash = document.createElement('button');
 
                 item.draggable = true;
                 checkbox.type = 'checkbox';
                 label.textContent = input.value;
                 label.spellcheck = false;
-                edit.classList = "fa-solid fa-pen-to-square";
-                hide.classList = "fa-solid fa-eye";
-                trash.classList = "fa-solid fa-trash";
+                edit.classList = 'fa-solid fa-pen-to-square';
+                hide.classList = 'fa-solid fa-eye';
+                trash.classList = 'fa-solid fa-trash';
                 input.value = '';
 
                 item.append(checkbox);
@@ -68,18 +85,19 @@
                 item.append(hide);
                 item.append(trash);
                 list.append(item);
+                updateProgress();
 
-                checkbox.addEventListener("click", () => {
+                checkbox.addEventListener('click', () => {
                     label.classList.toggle('strikeout');
-                    (checkbox.checked) ? progress.value += 100/list.childElementCount : progress.value -= 100/list.childElementCount;
-        
+                    updateProgress();
                 })
 
-                trash.addEventListener("click", () => {
+                trash.addEventListener('click', () => {
                     list.removeChild(item);
+                    updateProgress();
                 })
 
-                hide.addEventListener("click", () => {
+                hide.addEventListener('click', () => {
                     item.classList.toggle('hide');
                     if (hide.classList.contains('fa-solid')){
                         hide.className = 'fa-regular fa-eye';
@@ -88,7 +106,7 @@
                     }
                 })
                 
-                edit.addEventListener("click", () => {
+                edit.addEventListener('click', () => {
                     if (edit.classList.contains('fa-solid')){
                         edit.className = 'fa-regular fa-pen-to-square';
                         label.contentEditable = true;
@@ -100,6 +118,13 @@
                 })
             } else {}
         });
+
+        function updateProgress() {
+            const checkedItems = document.querySelectorAll('#list input:checked').length;
+            const totalItems = list.childElementCount;
+            progress.value = (checkedItems/totalItems) * 100;
+            progressText.textContent = Math.floor(progress.value) + '%';
+        }
 
         input.focus();
     </script>
